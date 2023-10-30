@@ -16,24 +16,29 @@ const WeatherBox = () => {
 		setPending(true);
 		fetch(
 			`http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}&units=metric`
-		).then(res => {
-			if (res.status === 200) {
-				return res.json().then(data => {
-					setWeatherData({
-						city: data.name,
-						temp: data.main.temp,
-						icon: data.weather[0].icon,
-						description: data.weather[0].main,
-					});
-					setPending(false);
-					setError(false);
+		)
+			.then(res => {
+				if (res.status === 200) {
+					return res.json();
+				} else {
+					throw new Error(res.statusText);
+				}
+			})
+			.then(data => {
+				setWeatherData({
+					city: data.name,
+					temp: data.main.temp,
+					icon: data.weather[0].icon,
+					description: data.weather[0].main,
 				});
-			} else {
-				setErrorMsg(res.statusText);
+				setPending(false);
+				setError(false);
+			})
+			.catch(error => {
+				setErrorMsg(error.message);
 				setError(true);
 				setPending(false);
-			}
-		});
+			});
 	}, []);
 
 	return (
