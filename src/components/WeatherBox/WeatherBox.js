@@ -4,7 +4,7 @@ import Loader from '../Loader/Loader';
 import ErrorBox from '../ErrorBox/ErrorBox';
 import { useCallback, useState } from 'react';
 
-const API_KEY = '0b35dd1a1b71a477e4f7bcb19531895d';
+const { REACT_APP_API_KEY } = process.env;
 
 const WeatherBox = () => {
 	const [weatherData, setWeatherData] = useState(null);
@@ -15,7 +15,7 @@ const WeatherBox = () => {
 	const handleCityChange = useCallback(cityName => {
 		setPending(true);
 		fetch(
-			`http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}&units=metric`
+			`http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${REACT_APP_API_KEY}&units=metric`
 		)
 			.then(res => {
 				if (res.status === 200) {
